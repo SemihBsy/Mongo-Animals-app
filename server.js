@@ -43,12 +43,12 @@ const animalsSchema = new Schema({
 })
 
 // make fruit model
-const Animal = model("Animal", animalsSchema)
+const Animal = model("Animal", animalsSchema);
 
 /////////////////////////////////////////////////
 // Create our Express Application Object
 /////////////////////////////////////////////////
-const app = express()
+const app = express();
 
 /////////////////////////////////////////////////////
 // Middleware
@@ -69,15 +69,15 @@ app.get("/animals/seed", (req, res) => {
 
     // array of starter animals
     const startAnimals = [
-        { species: "Passenger pigeon", extinct: true, location: "North America", lifeExpectancy: 15-17 },
-        { species: "Red panda", extinct: false, location: "Asia", lifeExpectancy: 9-13 },
-        { species: "Orangutan", extinct: false, location: "Asia", lifeExpectancy: 35-40 },
-        { species: "Dodo", extinct: true, location: "Africa", lifeExpectancy: 10-30 },
-        { species: "Tasmanian Tiger", extinct: true, location: "Australia", lifeExpectancy: 5-7 },
+        { species: "Passenger Pigeon", extinct: true, location: "North America", lifeExpectancy: 15 },
+        { species: "Red Panda", extinct: false, location: "Asia", lifeExpectancy: 9 },
+        { species: "Orangutan", extinct: false, location: "Asia", lifeExpectancy: 35 },
+        { species: "Dodo", extinct: true, location: "Africa", lifeExpectancy: 20 },
+        { species: "Tasmanian Tiger", extinct: true, location: "Australia", lifeExpectancy: 5 },
         ]
 
     // Delete all animals
-    Animal.remove({}, (err, data) => {
+    Animal.deleteMany({}, (err, data) => {
       // Seed Starter Fruits
       Animal.create(startAnimals,(err, data) => {
           // send created animals as response to confirm creation
@@ -88,10 +88,11 @@ app.get("/animals/seed", (req, res) => {
 });
 
 // index route
-app.get("/animals", async (req, res) => {
-    const animals = await Animals.find({});
-    res.render("animals/index.ejs", { animals });
-});
+app.get("/animals", (req, res) => {
+    Animal.find({}, (err, animals) => {
+      res.render("animals/index.ejs", { animals });
+    });
+  });
 
 // new route
 app.get("/animals/new", (req, res) => {
@@ -130,8 +131,8 @@ app.post("/animals", (req, res) => {
     Animal.create(req.body, (err, animal) => {
         // redirect the user back to the main animals page after animal created
         res.redirect("/animals")
-    })
-})
+    });
+});
 
 // edit route
 app.get("/animals/:id/edit", (req, res) => {
@@ -141,8 +142,8 @@ app.get("/animals/:id/edit", (req, res) => {
     Animal.findById(id, (err, animal) => {
         // render template and send it animal
         res.render("animals/edit.ejs", {animal})
-    })
-})
+    });
+});
 
 // show route
 app.get("/animals/:id", (req, res) => {
