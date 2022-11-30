@@ -13,7 +13,7 @@ const router = express.Router()
 // Routes
 /////////////////////////////////////////
 
-app.get("/seed", (req, res) => {
+router.get("/seed", (req, res) => {
 
     // array of starter animals
     const startAnimals = [
@@ -68,8 +68,8 @@ router.put("/:id", (req, res) => {
     Animal.findByIdAndUpdate(id, req.body, {new: true}, (err, animal) => {
         // redirect user back to main page when animal 
         res.redirect("/animals")
-    })
-})
+    });
+});
 
 // create route
 router.post("/", (req, res) => {
